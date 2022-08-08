@@ -25,6 +25,11 @@
   1. Download the zip-file with the project files;
   2. Create a virtual environment with the command ```python -m venv env```;
   3. Install all necessary packages by running the command ```pip install -r requirements.txt```;
-  4. To run the local server, type in the command ```python manage.py runserver```;
-  5. To run the Celery worker, type in ```celery -A barber worker --loglevel=info --pool=solo```;
+  4. Run all the migrations to create a db.sqlite3 file: ```python manage.py migrate```;
+  5. Create an admin user with the command ```python manage.py createsuperuser``` and fill in the credentials as you wish;
+  6. To run the local server, type in the command ```python manage.py runserver```;
+  7. To run the Celery worker, type in ```celery -A barber worker --loglevel=info --pool=solo```;
+  8. Go to the site and register various user types to fully test the project's functionality!
+
+  
   
