@@ -1,0 +1,11 @@
+Greetings, {{client_email|safe}}!
+You have successfully arranged an appointment with us!
+
+Here are its details:
+  Date: {{start_date}}
+  Barber: {{worker_name}}
+  Service: {{service}}
+  Duration: {{duration}}
+  Price: {{price}} UAH
+
+Hopefully, you'll be satisfied! See you!

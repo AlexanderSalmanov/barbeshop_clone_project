@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block title %}Barbers in {{query}}{% endblock title %}
+
+{% block content %}
+  <h3 align='center' class='mb-3'>
+
+      Here are all experts in {{query}}.
+
+  </h3>
+  <div class="row">
+  {% for worker in workers %}
+
+  <div class="col-3">
+    {% include 'base/snippets/card.html' with instance=worker %}
+    <br><br>
+  </div>
+  {% endfor %}
+  </div>
+{% endblock content %}

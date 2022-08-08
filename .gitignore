@@ -1,0 +1,4 @@
+barber/db.sqlite3
+barber/*/__pycache__/
+barber/env/*
+barber/media/*

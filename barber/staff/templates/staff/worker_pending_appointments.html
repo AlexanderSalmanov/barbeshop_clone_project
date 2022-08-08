@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% url 'staff:date_filter' date=chosen_date as date_filter_url %}
+{% block content %}
+<div class="row">
+  <div class="col-8">
+    <div class="p-5 mb-4 bg-light rounded-3">
+        <div class="container-fluid py-5">
+          <h1 class="display-5 fw-bold">My Appointments</h1>
+          <p class="col-md-8 fs-4">All my pending appointments are listed below.</p>
+        </div>
+    </div>
+  </div>
+  {% if appointments %}
+  <div class="col-4 date-filter-box mt-5">
+      <h4 class='text-muted fw-bold mt-5'>Select your appointments by date: </h4>
+      <a href="{% url 'staff:worker_appointments' %}" style='text-decoration:none'>
+        <span class='badge bg-warning'>All dates</span>
+      </a>
+      {% for date in appointment_dates %}
+        <a href="{% url 'staff:date_filter' date=date %}" style='text-decoration:none'>
+          <span class='badge bg-primary'>{{date}}</span>
+        </a>
+      {% endfor %}
+  </div>
+  {% endif %}
+</div>
+
+
+{% if not appointments %}
+  <h3 align='center' class='text-muted'>You have no clients yet. Just wait a bit!</h3>
+{% else %}
+<table class='table'>
+  <thead>
+    <th><i class='fa fa-inbox'></i></th>
+    <th><i class='fa fa-clock-o'></i></th>
+    <th><i class='fa fa-scissors'></i></th>
+    <th><i class='fa fa-money'></i></th>
+    <th><i class='fa fa-cog'></i></th>
+  </thead>
+  {% for item in appointments %}
+    {% if not item.is_done %}
+      <tr>
+        <td>{{item.client_email|safe}}</td>
+        <td>{{item.start_time|date:'Y-m-d H:i'}}</td>
+        <td>
+          {% for service in item.services.all %}
+            <span class='badge bg-info'>{{service.get_title_display}}</span>
+          {% endfor %}
+        </td>
+        <td>{{item.total_price}} UAH</td>
+        <td>
+          <a href="{% url 'staff:mark_done' item_id=item.id %}">Mark Done</a>
+        </td>
+      </tr>
+    {% endif %}
+  {% endfor %}
+</table>
+{% endif %}
+{% endblock content %}

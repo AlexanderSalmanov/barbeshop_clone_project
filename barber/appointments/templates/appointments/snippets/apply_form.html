@@ -1,0 +1,304 @@
+<!-- FORM FOR SELECTING LOCATION -->
+
+<div class="modal fade" id='locationModalForm' data-bs-backdrop='static' data-bs-keyboard='false' tabindex='-1' aria-labelledby='locationModalFormLabel' aria-hidden='true'>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class='modal-title' id='locationModalFormLabel'>Choose a place which is better for you.</h5>
+        <button type="button" class='btn-close' data-bs-dismiss='modal' aria-label='close'></button>
+      </div>
+      <div class="modal-body">
+        <h4>Select the location you want to go to. Different place - different specialist.</h4>
+        <h5 class='text-muted'>We are working in two places:</h5>
+        <div class="row">
+          {% for location in locations %}
+            <div class="col-6">
+
+              <div class="mapouter"><div class="gmap_canvas"><iframe class="gmap_iframe" width="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?width=300&amp;height=200&amp;hl=en&amp;q={{location.address}}&amp;t=p&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"></iframe><a href="https://embedmapgenerator.com/">embed google maps in website</a></div><style>.mapouter{position:relative;text-align:right;width:100%;height:200px;}.gmap_canvas {overflow:hidden;background:none!important;width:100%;height:200px;}.gmap_iframe {height:200px!important;}</style></div>
+            </div>
+          {% endfor %}
+        </div>
+        <form id="locationChoiceForm" action="{% url 'appointments:select_location' %}" method="post">
+          {% csrf_token %}
+          <label for="locationSelect">Choose a place: </label>
+          <select class='form-select' name="locationSelect" required>
+            {% for location in locations %}
+              <option value="{{location.id}}">{{location.address}}</option>
+            {% endfor %}
+          </select>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" form='locationChoiceForm' class='btn btn-primary' data-bs-target='#applyModalForm' data-bs-toggle='modal'>Continue</button>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- FORM FOR SELECTING A BARBER -->
+<div class="modal fade" id='applyModalForm' data-bs-backdrop="static" data-bs-keyboard="false" tabindex='-1' aria-labelledby='applyModalFormLabel' aria-hidden='true'>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class='modal-title' id='applyModalFormLabel'>Arrange an appointment with one of our barbers!</h5>
+        <button type="button" class='btn-close' data-bs-dismiss='modal' aria-label='close'></button>
+      </div>
+      <div class="modal-body">
+        <p id='selectedLocation'></p>
+        <h4>Select a specialist you want to apply to.</h4>
+        <form method="post" id='barberChoiceForm' action="{% url 'appointments:select_barber' %}">
+          {% csrf_token %}
+          <label for="barberSelect">Choose barber:</label>
+              <select class='form-select' name="barberSelect" id='barberSelect' required>
+                <!-- {% for barber in workers %}
+                  <option value="{{barber.worker_name}}">{{barber.worker_name}}</option>
+                {% endfor %} -->
+              </select>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class='btn btn-primary' data-bs-target='locationModalForm' data-bs-toggle='modal' name="button">Back to places</button>
+        <button class='btn btn-primary' form='barberChoiceForm' name="button" data-bs-target='#dateModalForm' data-bs-toggle='modal'>Continue</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FORM FOR SELECTING DATE FOR AN APPOINTMENT -->
+<div class="modal fade" id='dateModalForm' data-bs-backdrop="static" data-bs-keyboard="false" tabindex='-1' aria-labelledby='dateModalFormLabel' aria-hidden='true'>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class='modal-title' id='dateModalFormLabel'>What day would you choose to see us?</h5>
+        <button type="button" class='btn-close' data-bs-dismiss='modal' aria-label='close'></button>
+      </div>
+      <div class="modal-body">
+        <p id='barberChoice'></p>
+        <h4>Select date for an appointment.</h4>
+        <form method="post" id='dateChoiceForm' action="{% url 'appointments:select_date' %}">
+          {% csrf_token %}
+          <label for="dateInput" class='mt-3'>Choose date:</label>
+          <select id='dateInput' name='dateInput' class='form-select' required>
+
+          </select>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class='btn btn-primary' data-bs-target='#applyModalForm' data-bs-toggle='modal'>Back to barbers</button>
+        <button type="submit" class='btn btn-primary' data-bs-target='#timeModalForm' data-bs-toggle='modal' form='dateChoiceForm'>Continue</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FORM FOR SELECTING TIME OF APPOINTMENT -->
+
+<div class="modal fade" id='timeModalForm' data-bs-backdrop="static" data-bs-keyboard="false" tabindex='-1' aria-labelledby='timeModalFormLabel' aria-hidden='true'>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class='modal-title' id='timeModalFormLabel'>Okay, and what's the time you'd like to come at?</h5>
+        <button type="button" data-bs-dismiss='modal' class='btn btn-close' aria-label='close'></button>
+      </div>
+      <div class="modal-body">
+        <h4>Select the time you would like to come at.</h4>
+        <p id='dateChoice'></p>
+        <form id='timeChooseForm' action="{% url 'appointments:select_time' %}" method="post">
+          {% csrf_token %}
+          <label for="timeInput" class='mt-3'>Choose time:</label>
+
+            <select id='timeInput' name='timeInput' class='form-select' required>
+
+            </select>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#dateModalForm' name="button">Back to dates</button>
+        <button type="submit" class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#serviceModalForm' form='timeChooseForm' name="button">Continue</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FORM FOR SELECTING SERVICE -->
+
+<div class="modal fade" id='serviceModalForm' data-bs-backdrop="static" data-bs-keyboard="false" tabindex='-1' aria-labelledby='serviceModalFormLabel' aria-hidden='true'>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class='modal-title' id='serviceModalFormLabel'>What exactly should we do?</h5>
+        <button type="button" data-bs-dismiss='modal' class='btn btn-close' aria-label='close'></button>
+      </div>
+      <div class="modal-body">
+        <p id='dateTimeChoice'></p>
+        <h4>Choose Services you would like to attend.</h4>
+        <form method="post" id='serviceChoiceForm' action="{% url 'appointments:select_service' %}">
+          {% csrf_token %}
+          <label for="serviceInput" class='mt-3'>Select service:</label>
+          <select class="form-select" name='serviceInput' id="serviceInput" multiple>
+
+          </select>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class='btn btn-primary' data-bs-target='#timeModalForm' data-bs-toggle='modal'>Back to dates</button>
+        <button type="submit" class='btn btn-primary' form='serviceChoiceForm' data-bs-toggle='modal' data-bs-target='#appointmentSubmitModalForm'>Continue</button>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- FORM FOR APPOINTMENT SUMMARY AND PERSONAL INFO -->
+
+<div class="modal fade" id='appointmentSubmitModalForm' data-bs-backdrop="static" data-bs-keyboard="false" tabindex='-1' aria-labelledby='appointmentSubmitModalLabel' aria-hidden='true'>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class='modal-title' id='appointmentSubmitModalLabel'>Now, it's time for your contact info!</h5>
+        <button type="button" data-bs-dismiss='modal' class='btn btn-close' aria-label='close'></button>
+      </div>
+      <div class="modal-body">
+        <h4>Your data</h4>
+        <form method="post" id='submitAppointmentForm' action="{% url 'appointments:create_appointment' %}">{% csrf_token %}
+          <label for="nameInput">Your Name: </label>
+          <input type="text" class='form-control' placeholder='Enter name' value='{% if user.is_authenticated %}{{user.get_full_name}}{% endif %}' name='nameInput'>
+          <label for="emailInput">E-mail: </label>
+          <input type="email" class='form-control' placeholder='Enter e-mail' name="emailInput" value="{% if user.is_authenticated %}{{user.email}}{% endif %}">
+          <label for="sendEmail">Would you like to receive a conformation email?</label>
+          <input type="checkbox" class='form-check' name="sendEmail" value="1">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <h4>Appoinment summary: </h4><br>
+        <p id='addressInfo'>Address: </p>
+        <p id='barberInfo'>Barber: </p>
+        <p id='timeInfo'>Date: </p>
+        <p id='serviceInfo'>Service: </p>
+        <button type="submit" form='submitAppointmentForm' form='submitAppointmentForm' class='btn btn-primary'>Make an appointment</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+
+    $('#locationChoiceForm').submit(function(e){
+      e.preventDefault();
+      $.ajax({
+        url: "{% url 'appointments:select_location' %}",
+        type: "POST",
+        data: $(this).serialize(),
+        success: function(json){
+            document.getElementById('selectedLocation').innerHTML = 'Selected place: ' + json.location;
+            console.log(json.workers)
+            for (var i = 0; i < json.workers.length; i++) {
+              // this piece of code inserts all items from json.workers list to the incoming form.
+              // All next forloops in AJAX success functions do the exact same thing so no need in explicitly describing them.
+              var option = $("<option value='"+ json.workers[i] + "'>" + json.workers[i] + "</option>");
+              $('#barberSelect').append(option);
+            }
+        },
+        error: function(xhr, errmsg){
+
+        }
+      })
+    })
+
+      // barber form async portion
+      $('#barberChoiceForm').submit(function(e){
+          e.preventDefault();
+          barberSelect = $(this).find('option:selected').val();
+          $.ajax({
+            url: "{% url 'appointments:select_barber' %}",
+            type: "POST",
+            data: {
+              'barberSelect': barberSelect,
+              'csrfmiddlewaretoken': '{{csrf_token}}'
+            },
+            success: function(json){
+              document.getElementById('barberChoice').innerHTML = '<p id="selectedBarberInfo">Barber: ' + json.worker_name + '</p>';
+              for (var i = 0; i < json.worker_dates.length; i++) {
+                var option = $("<option value='"+ json.worker_dates[i] + "'>" + json.worker_dates[i] + "</option>");
+                $('#dateInput').append(option);
+              }
+            },
+            error: function(errmsg){
+
+            }
+
+          })
+      })
+
+      // DateChoiceForm async portion.
+      $('#dateChoiceForm').submit(function(e){
+          e.preventDefault();
+          $.ajax({
+            url: "{% url 'appointments:select_date' %}",
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function(json){
+              console.log(json);
+              document.getElementById('dateChoice').innerHTML = 'The date you have selected is: ' + json.selected_date + '. Free hours for this date are shown below.';
+              for (var i = 0; i < json.free_hours.length; i++) {
+                var option = $("<option value='"+ json.free_hours[i] + "'>" + json.free_hours[i] + "</option>")
+                $('#timeInput').append(option)
+              }
+            },
+            error: function(err){
+
+            }
+          })
+      })
+
+      //TimeChooseForm async portion.
+      $('#timeChooseForm').submit(function(e){
+        e.preventDefault();
+        $.ajax({
+          url: "{% url 'appointments:select_time' %}",
+          type: 'POST',
+          data: $(this).serialize(),
+          success: function(json){
+            document.getElementById('dateTimeChoice').innerHTML = 'You want to visit ' + json.selected_barber + ' on ' + json.result_time;
+
+            for (var i = 0; i < json.barber_expertise.length; i++) {
+              var option = $("<option value='"+ json.barber_expertise[i] + "'>" + json.service_titles[i] + "</option>")
+              $('#serviceInput').append(option);
+            }
+          }
+        })
+      })
+
+      //serviceChoiceForm async potrion. Note that final appointment booking form is not AJAX-ifyed.
+      $('#serviceChoiceForm').submit(function(e){
+          e.preventDefault();
+          var data = $(this).serialize();
+          var serviceTitles = $(this).find('#serviceInput').val();
+          $.ajax({
+            url: "{% url 'appointments:select_service' %}",
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function(json){
+              console.log(serviceTitles)
+              document.getElementById('addressInfo').innerHTML = 'Address: ' + json.address;
+              document.getElementById('barberInfo').innerHTML = 'Barber: ' + json.worker_name;
+              document.getElementById('timeInfo').innerHTML = 'Date: ' + json.result_time;
+              document.getElementById('serviceInfo').innerHTML = 'Services: ' + json.service_titles;
+            },
+            error: function(errmsg){
+
+            }
+          })
+      })
+
+  })
+</script>

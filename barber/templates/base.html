@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+{% load bootstrap5 %}
+{% load static %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>{% block title %} {% endblock title %}</title>
+    <style media="screen">
+      .enroll-button{
+        border-radius: 50%;
+        height: 100px;
+        width: 100px;
+      }
+
+      .fa-github{
+        font-size: 50px;
+        color: black;
+      }
+
+      .fa-twitter{
+        font-size: 50px;
+        color: black;
+      }
+
+      .fa-twitter:hover{
+        color: #1DA1F2;
+        transition: 0.3s;
+      }
+
+      .fa-linkedin-square{
+        font-size: 50px;
+        color: black;
+      }
+
+      .fa-linkedin-square:hover{
+        color: #0072b1;
+        transition: 0.3s;
+      }
+
+
+    </style>
+  </head>
+  <body class='d-flex flex-column min-vh-100'>
+
+    {% include 'base/snippets/navbar.html' %}
+    {% include 'base/snippets/messages.html' %}
+    <div class="container">
+      {% if not user.is_worker %}
+      <div class="row">
+        <div class="col-3">
+        </div>
+        <div class="col-9" align='right'>
+          <button type="button" class='btn btn-secondary mt-2 enroll-button' data-bs-toggle='modal' data-bs-target='#locationModalForm'>
+              Apply Online
+          </button>
+            <center>
+              {% include 'appointments/snippets/apply_form.html' %}
+            </center>
+        </div>
+      </div>
+      {% endif %}
+
+      {% block content %}
+
+      {% endblock content %}
+    </div>
+
+      {% include 'base/snippets/footer.html' %}
+  </body>
+</html>

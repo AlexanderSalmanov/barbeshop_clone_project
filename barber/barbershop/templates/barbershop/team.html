@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block title %}Our Team{% endblock title %}
+
+{% block content %}
+  <h3 align='center' class='mb-3'>
+
+      These are our specialists ready to make you look really brilliant.
+
+  </h3>
+  <div class="row">
+  {% for worker in workers %}
+
+  <div class="col-3">
+    {% include 'base/snippets/card.html' with instance=worker %}
+    <br><br>
+  </div>
+  {% endfor %}
+  </div>
+{% endblock content %}

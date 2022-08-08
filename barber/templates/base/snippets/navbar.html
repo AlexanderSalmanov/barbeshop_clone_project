@@ -1,0 +1,102 @@
+{% url 'barbershop:team' as team_view %}
+{% url 'barbershop:filters' slug=service_slug as filter_view %}
+<nav class="navbar navbar-dark bg-dark fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'home' %}"><i class='fa fa-scissors'></i> Chop Chop Barber
+      {% if user.is_worker %}
+        <i class='fa fa-check-circle'></i>
+      {% endif %}
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel"><i class='fa fa-navicon'></i> Navigation</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body bg-dark text-white">
+        <ul class="navbar-nav flex-grow-1 pe-3">
+          {% if not user.is_worker %}
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'home' %}"><i class='fa fa-home'></i> Home</a>
+          </li>
+          <li class='nav-item'>
+            <a class='nav-link' href="{% url 'barbershop:services' %}"><i class='fa fa-list'></i> Services</a>
+          </li>
+          <li class='nav-item'>
+            <a class='nav-link' href="{% url 'barbershop:team' %}"><i class='fa fa-group'></i> Our team</a>
+          </li>
+          <li class='nav-item'>
+            <a class='nav-link' href="{% url 'appointments:client_appointments' %}"><i class='fa fa-calendar-check-o'></i> My Appointments</a>
+          </li>
+
+          {% else %}
+          <p class='h3 text-muted'>My Professional Options</p><hr>
+          <li class='nav-item'>
+            <a class='nav-link' href="{% url 'staff:worker_appointments' %}"><i class='fa fa-calendar-minus-o'></i> Pending Appointments</a>
+          </li>
+          <li class='nav-item dropdown'>
+            <a class='nav-link dropdown-toggle' role='button' data-bs-toggle='dropdown' aria-expanded='false' id='setWeeklyDd'  href="#" title='Sets Schedule for a week forward.'>Set my schedule</a>
+            <ul class='dropdown-menu bg-dark text-white'>
+              <form action="{% url 'staff:set_weekly_schedule' %}" method="post">
+                {% csrf_token %}
+                <h5 class='text-muted'>Select the time of the day.</h5>
+                <label for="DayOpt">Day </label>
+                <input type='radio' name="daytimeChoice" value="D">
+                <label for="EveningOpt">Evening </label>
+                <input type="radio" name="daytimeChoice" value="E"><br>
+                <button type="submit" class='btn btn-primary btn-lg mt-3' name="button">Go</button>
+              </form>
+            </ul>
+          </li>
+          {% endif %}
+          {% if user.is_admin %}
+          <hr><p class='h3 text-muted'>Admin Actions</p>
+          <li class='nav-item dropdown'>
+            <a class='nav-link dropdown-toggle' role='button' data-bs-toggle='dropdown' aria-expanded='false' id='newSchedDropdown' title='Generates 7 relevant schedules for upcoming week.'>
+              <i class='fa fa-plus'></i> Create New Schedules
+            </a>
+            <ul class='dropdown-menu bg-dark text-white'>
+              <form action="{% url 'staff:create_schedules' %}" method="post">
+                {% csrf_token %}
+                <label for="schedType" class='form-label'>Select the type of schedule (Day/Evening)</label>
+                <select name='schedType' class='form-control'>
+                  <option value="D">Day</option>
+                  <option value="E">Evening</option>
+                </select>
+                <button type="submit" class='btn btn-primary btn-lg mt-3' name="button">Go</button>
+              </form>
+            </ul>
+          </li>
+          <li class='nav-item'>
+            <a class='nav-link' href="{% url 'staff:refresh_schedules' %}" title='Sets relevant dates for all existing schedules.'><i class='fa fa-pencil'></i> Update existing schedules</a>
+          </li>
+          {% endif %}
+          <hr><p class='h3 text-muted'><i class='fa fa-key'></i> Authorization</p>
+          {% if user.is_authenticated %}
+            <li class='nav-item'>
+              <a class='nav-link' href="{% url 'account_logout' %}"><i class='fa fa-sign-out'></i> Log Out</a>
+            </li>
+          {% else %}
+            <li class='nav-item'>
+              <a class='nav-link' href="{% url 'account_login' %}"><i class='fa fa-sign-in'></i> Log In</a>
+            </li>
+            <li class='nav-item'>
+              <a class='nav-link' href="{% url 'register' %}"><i class='fa fa-address-book'></i> Sign Up</a>
+            </li>
+          {% endif %}
+          {% if request.path == team_view or request.path == filter_view %}
+          <hr><h3 class='text-muted'><i class='fa fa-align-left'></i> Filter barbers by their expertise</h3>
+          {% for item in services %}
+            <a href="{% url 'barbershop:filters' slug=item.slug %}">
+              <span class='badge bg-{% if request.path == filter_view and service_slug == item.slug %}primary{% else %}secondary{% endif %} mt-1' data-index="{{item.title}}">{{item.get_title_display}}</span>
+            </a>
+          {% endfor %}
+
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav><br><br>

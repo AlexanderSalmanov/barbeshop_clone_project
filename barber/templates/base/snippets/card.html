@@ -1,0 +1,14 @@
+{% load static %}
+<div class="card bg-dark text-white d-flex flex-column">
+  {% if not instance.profile_pic %}
+    <img src="{% static 'images/no_photo_placeholder.jpg' %}" width='280px' height='380px' class="card-img" alt="...">
+  {% else %}
+    <img src="{{instance.profile_pic.url}}" width='280px' height='380px' class='card-img'>
+  {% endif %}
+  <div class="card-img-overlay">
+    <h4 class="card-title text-center">{{instance.worker_name}}</h4>
+
+        <a href="{{instance.get_absolute_url}}" class='btn btn-secondary' style='position:absolute; bottom: 0; opacity: 0.5'><i class='fa fa-search'></i> </a>
+
+  </div>
+</div>

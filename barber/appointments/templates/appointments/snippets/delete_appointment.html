@@ -1,0 +1,15 @@
+<div class="modal fade" tabindex='-1' aria-hidden='true' aria-labelledby='deleteAppointmentModalLabel' id='deleteAppointmentModal'>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class='modal-title' id='deleteAppointmentModalLabel'>Are you sure you want to cancel appointment?</h5>
+      </div>
+      <div class="modal-body">
+        <p class='lead'>Make sure you do it for a reason. Once this action is done, it can't be rolled back.</p>
+        <button type="button" class='btn btn-secondary' data-bs-dismiss='modal' aria-label='close' name="button">Cancel</button>
+        <a href="{{appointment.get_delete_url}}" class='btn btn-dark'>Confirm Deletion</a>
+      </div>
+    </div>
+  </div>
+
+</div>

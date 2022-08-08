@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}About Barber {% endblock title %}
+
+{% block content %}
+  <h1 align='center' class='mt-5'>About barber</h1>
+  <center>
+  <p class='lead'>Our barbers will make your look exceptional by combining good old traditional haircuts and straight razor shaves with modern technology.</p>
+  </center>
+
+  <div class="row barber-box">
+    <div class="col-3 img-and-name-box">
+      <div class="d-flex flex-column">
+        <img class='rounded' src="{% if worker.profile_pic %}{{worker.profile_pic.url}}{% else %}{% static 'images/no_photo_placeholder.jpg' %}{% endif %}" height='250px' width='220px' alt="">
+      </div>
+      <h4>{{worker.worker_name}}</h4>
+      <p class='text-muted'>Barber</p>
+    </div>
+    <div class="col-6 bio-and-expertise-box">
+      <h3>{{worker.worker_name}}</h3><br>
+      <p class='text-muted'>
+        {% if worker.bio %}
+          {{worker.bio}}
+        {% else %}
+          This barber is not too keen on talking about him/herself, but never doubt that your haircut would look really brilliant after visiting him/her!
+        {% endif %}
+      </p>
+      <h4>Expertise</h4><hr>
+      {% for expertise in worker.expertise.all %}
+        <p><span class='badge bg-light text-dark' style='font-size: 1.2em'>{{expertise.get_title_display}} <i class='fa fa-check'></i></span></p>
+      {% endfor %}
+    </div>
+    <div class="col-3 schedule-box">
+      <h5>When can I appoint to this barber?</h5>
+      <ul class='list-unstyled' style='overflow-y:scroll; height:400px'>
+      {% for item in schedules %}
+        <li>
+          <b>{{item.schedule.date_for}}</b><br>
+          <p class='text-muted'>{{item.schedule.get_title_display}}</p>
+          <div class="d-flex-inline">
+            {% for entry in item.free_hours %}
+              <span class='badge bg-success'>{{entry}}</span>
+            {% endfor %}
+          </div>
+        </li>
+      {% endfor %}
+      </ul>
+    </div>
+
+  </div>
+{% endblock %}

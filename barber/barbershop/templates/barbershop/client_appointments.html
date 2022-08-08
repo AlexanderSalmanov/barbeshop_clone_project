@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}My appointments{% endblock title %}
+
+{% block content %}
+  <h1>My appointments</h1>
+  {% for item in appointments %}
+    <div class="row">
+      <div class="col-9">
+        <h3>Appointment on {{item.start_time}} to barber {{item.worker.worker_name}}</h3>
+      </div>
+      <div class="col-3">
+        <button type="button" class='btn btn-link appoint-delete-btn' data-bs-target='#deleteAppointmentModal' data-bs-toggle='modal'>Cancel Appointment</button>
+        {% include 'appointments/snippets/delete_appointment.html' with appointment=item %}
+      </div>
+      <hr>
+    </div>
+    <p>Address: {{item.address}}</p>
+    <p>Services:
+      {% for service in item.services.all %}
+        <span class='badge bg-info'>{{service.get_title_display}}</span>
+      {% endfor %}
+    </p>
+    <p>Total price: {{item.total_price}} UAH</p>
+  {% empty %}
+    <h3>You have no pending appointments yet.</h3>
+    <p class='lead'>If you want to apply for an appointment, please press the 'Apply Online' key in the top-right corner and follow the instructions!</p>
+  {% endfor %}
+
+{% endblock content %}

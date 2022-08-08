@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Home Page {% endblock title %}
+
+{% block content %}
+  <h1 align='center' class='mt-2'>
+    About us
+  </h1><hr>
+  <div class="row">
+    <div class="col-5">
+      <img src="{% static 'images/barbershop_thumbnail.jpg' %}" class='rounded'>
+    </div>
+    <div class="col">
+      <p style='font-size: 1.5em'>A man's haircut defines the image and emphasizes its strengths, entrust the formation of your image to professionals. And the bonus to each haircut is a piece of our soul.
+
+<br>Our range of services covers a wide range of techniques and procedures, from classic royal shaves to modern haircuts and styling. In our barbershop, you will definitely be able to put your head in order, not only getting rid of excess hair and bad mood, but also enjoying an interesting company, drinks and great music.</p>
+    </div>
+  </div>
+  <h1 align='center'>
+    Competence
+  </h1><hr>
+  <div class="container" style='width: 80%'>
+    <p style='font-size: 1.25em'>We can offer a vast variety of services: from usual haircuts to styling and even brow correction. Whatever our clients may need! <br>
+    Prices also range from 100 UAH up to 600 for having a haircut for you and your friend. Press the 'Apply online' button and fill in the form to visit us!</p>
+  </div>
+  <h1 align='center'>
+    Places
+  </h1><hr>
+  <div class="row">
+    <h3>Finding us is quite simple. We're working at 2 places now, here they are: </h3>
+    {% for location in locations %}
+      <div class="col-6">
+
+        <div class="mapouter"><div class="gmap_canvas"><iframe class="gmap_iframe" width="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?width=600&amp;height=400&amp;hl=en&amp;q={{location.address}}&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"></iframe><a href="https://embedmapgenerator.com/">embed google maps in website</a></div><style>.mapouter{position:relative;text-align:right;width:100%;height:400px;}.gmap_canvas {overflow:hidden;background:none!important;width:100%;height:400px;}.gmap_iframe {height:400px!important;}</style></div>
+
+      </div>
+    {% endfor %}
+{% endblock %}
