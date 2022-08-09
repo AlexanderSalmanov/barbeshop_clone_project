@@ -67,14 +67,16 @@ def refresh_schedules(request):
             week_key = buff
 
         value.date_for = week[week_key]
-        update_list.append(value)
+        if value.date_for not in schedule_before_dates:
+            update_list.append(value)
     Schedule.objects.bulk_update(update_list, ['date_for'])
     for item in Schedule.objects.all():
-        if item.date_for not in schedule_before_dates:
-            item.set_dates_listed()
+        # if item.date_for not in schedule_before_dates:
+        item.set_dates_listed()
 
     for item in WorkerSchedule.objects.all():
-        if item.schedule.date_for not in schedule_before_dates:
-            item.set_free_dates()
+        # if item.schedule.date_for not in schedule_before_dates:
+        item.set_free_dates()
+
     messages.success(request, 'Schedules successfully updated.')
     return redirect('/')
