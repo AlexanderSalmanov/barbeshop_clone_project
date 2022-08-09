@@ -32,6 +32,11 @@ The project still needs some bug fixes related to date and workers' schedule han
   7. To run the local server, type in the command ```python manage.py runserver```;
   8. To run the Celery worker, type in ```celery -A barber worker --loglevel=info --pool=solo```;
   9. Go to the site and register various user types to fully test the project's functionality!
+    9.1 Log in as admin user, go to the admin panel, and create several ```Location``` and ```Service``` instances (2-3 ones of each type would be enough);
+    9.2 Go back to the site, find the option ```Create new schedules```, and create ```Schedule``` instances of the type you need (Day/Evening);
+    9.3 Log out, go to the Sign Up page and register several ```Worker``` users (tick the very last checkbox on the sign up page);
+    9.4 Log in as ```Worker``` user, and find the ```Set my working schedule``` option in the navbar, select the daytime you need and run this action;
+    9.5 Log out again, and then test the appointment booking functionality!
 
   
   
