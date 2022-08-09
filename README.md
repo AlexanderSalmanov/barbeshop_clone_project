@@ -1,4 +1,5 @@
 ### This is my project where I'm trying to implement all features which are crucial for a barbershop: appointment booking, proper date handling and so on.
+The project still needs some bug fixes related to date and workers' schedule handling to make the entire process of managing barbers' working time simple and transparent.
 
 ##### This project can be divided into 3 sections for the following user types:
   
