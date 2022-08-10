@@ -75,8 +75,8 @@ def refresh_schedules(request):
         item.set_dates_listed()
 
     for item in WorkerSchedule.objects.all():
-        # if item.schedule.date_for not in schedule_before_dates:
-        item.set_free_dates()
+        if item.schedule.date_for not in schedule_before_dates:
+            item.set_free_dates()
 
     messages.success(request, 'Schedules successfully updated.')
     return redirect('/')
