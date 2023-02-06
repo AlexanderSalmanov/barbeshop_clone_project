@@ -22,10 +22,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-0#wz45^q%t2w&e--0sssc8psj2extrr*(=@#wa5oqhi=yz=(bq'
+SECRET_KEY = os.environ.get("SECRET_KEY", 'somesecretkey')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", 1)
 
 ALLOWED_HOSTS = []
 
@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'django_google_maps',
-    'django_celery_beat',
+    # 'django_celery_beat',
     # my own ones
     'users',
     'barbershop',
@@ -109,10 +109,20 @@ WSGI_APPLICATION = 'barber.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST')
     }
 }
 
@@ -222,11 +232,11 @@ BOOTSTRAP5 = {
 # email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'chopbarberdemo@gmail.com'
-EMAIL_HOST_PASSWORD = 'ftevxxqehqzppflk'
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'chopbarberdemo@gmail.com'
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL")
 
 GOOGLE_MAPS_API_KEY = 'AIzaSyBLkXvhQOOTsEt5tPev9K88Qs5dy7qK5Kc'
 GOOGLE_MAPS_JAVASCRIPT_API_KEY = 'AIzaSyCxQ0xbIrTb2xJkVjwGKAuuk950dtcjTIo'
@@ -239,3 +249,6 @@ MESSAGE_TAGS = {
         messages.WARNING: 'alert-warning',
         messages.ERROR: 'alert-danger',
  }
+
+CELERY_BROKER_URL = 'redis://redis:6379'
+CELERY_RESULT_BACKEND = 'redis://redis:6379'
